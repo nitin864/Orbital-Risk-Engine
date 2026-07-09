@@ -8,3 +8,7 @@ class Satellite(BaseModel):
     name: str
     line1: str
     line2: str
+    norad_id: str
+    inclination: str
+    eccentricity: str
+    mean_motion: str

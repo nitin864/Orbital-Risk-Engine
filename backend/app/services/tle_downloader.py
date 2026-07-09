@@ -53,11 +53,19 @@ class TLEDownloader:
 
         for i in range(0, len(lines), 3):
             try:
+                line1 = lines[i + 1].strip()
+                line2 = lines[i + 2].strip()
+
                 satellite = Satellite(
                     name=lines[i].strip(),
-                    line1=lines[i + 1].strip(),
-                    line2=lines[i + 2].strip(),
+                    line1=line1,
+                    line2=line2,
+                    norad_id=line1[2:7].strip(),
+                    inclination=line2[8:16].strip(),
+                    eccentricity=line2[26:33].strip(),
+                    mean_motion=line2[52:63].strip(),
                 )
+
                 satellites.append(satellite)
             except IndexError:
                 continue
