@@ -64,6 +64,7 @@ class TLEDownloader:
                     inclination=float(line2[8:16].strip()),
                     eccentricity=float("0." + line2[26:33].strip()),
                     mean_motion=float(line2[52:63].strip()),
+                    orbital_period_minutes=1440 / float(line2[52:63].strip()),
                 )
 
                 satellites.append(satellite)

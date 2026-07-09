@@ -12,3 +12,4 @@ class Satellite(BaseModel):
     inclination: float
     eccentricity: float
     mean_motion: float
+    orbital_period_minutes: float 
