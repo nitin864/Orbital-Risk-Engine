@@ -61,9 +61,9 @@ class TLEDownloader:
                     line1=line1,
                     line2=line2,
                     norad_id=line1[2:7].strip(),
-                    inclination=line2[8:16].strip(),
-                    eccentricity=line2[26:33].strip(),
-                    mean_motion=line2[52:63].strip(),
+                    inclination=float(line2[8:16].strip()),
+                    eccentricity=float("0." + line2[26:33].strip()),
+                    mean_motion=float(line2[52:63].strip()),
                 )
 
                 satellites.append(satellite)
