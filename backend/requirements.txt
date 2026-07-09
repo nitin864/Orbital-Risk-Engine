@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+skyfield
+sgp4
+numpy
+pandas
+sqlalchemy
+psycopg
+httpx
+apscheduler
+python-dotenv
+pydantic
+pytest
+black
+ruff
