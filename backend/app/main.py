@@ -1,6 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
-from app.services.tle_downloader import TLEDownloader
+from app.services.satellite_query_service import get_all_satellites
 
 app = FastAPI(title="OrbitShield")
 
@@ -12,18 +12,7 @@ def root():
 
 @app.get("/satellites")
 def get_satellites():
-    downloader = TLEDownloader()
-
-    try:
-        raw_text = downloader.download()
-    except Exception as e:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Failed to fetch TLE data: {str(e)}"
-        )
-
-    satellites = downloader.parse(raw_text)
-
+    satellites = get_all_satellites()
     return {
         "count": len(satellites),
         "satellites": satellites[:5],
