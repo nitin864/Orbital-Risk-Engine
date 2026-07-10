@@ -123,7 +123,7 @@ confirming real propagation (not a stubbed/static return).
 ---
 
 ## Module 7 — Database Design (PostgreSQL)
-**Status: ⬜ Not started**
+**Status: ✅ Done**
 
 Nothing persists between server restarts currently — this is the biggest
 structural gap right now.
