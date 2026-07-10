@@ -15,3 +15,12 @@ class SatelliteDB(Base):
     eccentricity = Column(Float)
     mean_motion = Column(Float)
     orbital_period_minutes = Column(Float)
+    
+class CloseApproachDB(Base):
+    __tablename__ = "close_approaches"
+
+    id = Column(Integer, primary_key=True, index=True)
+    satellite_1_norad_id = Column(String, index=True)
+    satellite_2_norad_id = Column(String, index=True)
+    min_distance_km = Column(Float)
+    closest_time_utc = Column(String)

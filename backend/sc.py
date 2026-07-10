@@ -1,5 +1,5 @@
-from app.services.satellite_query_service import get_all_satellites
+from app.database.database import Base, engine
+from app.database.models import CloseApproachDB
 
-results = get_all_satellites()
-print("Count:", len(results))
-print(results[0].name, results[0].norad_id)
+Base.metadata.create_all(bind=engine)
+print("close_approaches table created")
