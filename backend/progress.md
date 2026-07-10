@@ -1,6 +1,6 @@
 # OrbitShield — Progress Log
 
-## Status: Chapter 5 — Orbit Propagation (Skyfield)
+## Status: Chapter 8 — collision detection
 
 ### Done
 - Chapter 2: TLE download + caching from CelesTrak (app/services/tle_downloader.py)
@@ -11,17 +11,5 @@
   - get_current_position(satellite) -> current lat/lon/altitude
   - get_position_at_time(satellite, time) -> position at arbitrary time
   - Both tested and working
+-Module 6 — Coordinate Systems (Raw XYZ for Distance Math)
 
-### Next up
-- Get raw XYZ position (geocentric.position.km) instead of lat/lon,
-  needed for distance calculations between satellites
-- Build distance function between two satellites at the same time
-- This feeds into collision detection (Chapter 8)
-
-### Not started yet
-- Database (PostgreSQL) — currently nothing persists between server restarts
-- Collision detection algorithm
-- Risk scoring
-- FastAPI endpoints beyond /satellites
-- React frontend
-- Scheduler for automatic background refresh
