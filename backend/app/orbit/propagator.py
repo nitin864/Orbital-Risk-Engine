@@ -37,3 +37,16 @@ def get_position_at_time(satellite: Satellite, time):
         "longitude": float(subpoint.longitude.degrees),
         "altitude_km": float(subpoint.elevation.km),
     }
+    
+def get_xyz_at_time(satellite: Satellite, time):
+    """
+    returns the raw (x, y, z) position in km, relative to Earth's center.
+    """
+    sky_satellite = EarthSatellite(satellite.line1, satellite.line2, satellite.name)
+    geocentric = sky_satellite.at(time)
+    x,y,z = geocentric.position.km
+    
+    return {
+        "position": (float(x), float(y), float(z)),
+    }
+    
