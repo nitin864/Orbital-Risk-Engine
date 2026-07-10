@@ -1,11 +1,5 @@
-from app.services.tle_downloader import TLEDownloader
-from app.services.sync_service import sync_satellites_to_db
+from app.services.satellite_query_service import get_all_satellites
 
-downloader = TLEDownloader()
-raw = downloader.download()
-satellites = downloader.parse(raw)
-
-print("Parsed count:", len(satellites))
-
-result = sync_satellites_to_db(satellites)
-print(result)
+results = get_all_satellites()
+print("Count:", len(results))
+print(results[0].name, results[0].norad_id)
