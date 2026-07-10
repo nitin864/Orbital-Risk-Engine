@@ -109,7 +109,7 @@ confirming real propagation (not a stubbed/static return).
 ---
 
 ## Module 6 — Coordinate Systems (Raw XYZ for Distance Math)
-**Status: 🔶 Just starting**
+**Status: ✅ Done**
 
 **File:** `app/orbit/propagator.py` (extend) or new `app/orbit/coordinates.py`
 
@@ -139,7 +139,7 @@ structural gap right now.
 ---
 
 ## Module 8 — Collision Detection Algorithm
-**Status: ⬜ Not started**
+**Status: WORKING**
 
 - [ ] Distance function between two satellites at a shared timestamp (uses
       Module 6 output)
