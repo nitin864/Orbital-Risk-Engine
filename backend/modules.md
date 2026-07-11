@@ -163,7 +163,7 @@ plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 9 — Risk Scoring
-**Status: ⬜ Not started**
+**Status:Working**
 
 - [ ] Minimum separation distance
 - [ ] Relative velocity between the two objects at closest approach

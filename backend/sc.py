@@ -1,5 +1,5 @@
-from app.collision.risk import calculate_risk_score
+from app.database.database import Base, engine
+from app.database.models import SatelliteDB, CloseApproachDB
 
-print(calculate_risk_score(500, 7.5))    # normal case
-print(calculate_risk_score(0, 7.5))      # edge case — should NOT crash
-print(calculate_risk_score(0.0001, 7.5)) # near-zero edge case
+Base.metadata.create_all(bind=engine)
+print("Tables recreated")

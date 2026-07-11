@@ -24,3 +24,4 @@ class CloseApproachDB(Base):
     satellite_2_norad_id = Column(String, index=True)
     min_distance_km = Column(Float)
     closest_time_utc = Column(String)
+    risk_score = Column(Float)
