@@ -38,3 +38,12 @@ def find_closest_approach(sat1: Satellite, sat2: Satellite, hours: int, step_min
             min_time = current_time
 
     return {"min_distance_km": min_distance, "time": min_time}
+
+def calculate_relative_velocity(vel1: tuple, vel2: tuple) -> float:
+    """
+    creating this function to calculate the relative speed (km/s) between two velocity vectors.
+    """
+    vx1, vy1, vz1 = vel1
+    vx2, vy2, vz2 = vel2
+    velocity_squared = (vx2 - vx1) ** 2 + (vy2 - vy1) ** 2 + (vz2 - vz1) ** 2
+    return velocity_squared ** 0.5
