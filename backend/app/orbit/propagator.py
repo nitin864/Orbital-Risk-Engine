@@ -1,6 +1,7 @@
 from skyfield.api import load, EarthSatellite, wgs84
 import math
 from app.models.satellite import Satellite
+ 
 
 _ts = load.timescale()
 
@@ -66,3 +67,26 @@ def estimate_altitude_km(satellite: Satellite) -> float:
     
    
     return a-EARTH_RADIUS_KM 
+
+def get_altitude_band(altitude_km: float, band_width_km: float = 50) -> int:
+    """
+    created this function to returns which altitude band a given altitude falls into.
+    E.g. with band_width_km=50: 992 km -> band 19 (950-1000 km range)
+    """
+    return int(altitude_km // band_width_km)
+
+def group_satellites_by_band(satellites: list, band_width_km: float = 50) -> dict:
+    """
+    creted this function for grouping satellites into a dict keyed by altitude band.
+    
+    """
+    bands = {}
+
+    for sat in satellites:
+        altitude = estimate_altitude_km(sat)
+        band = get_altitude_band(altitude, band_width_km)
+
+        bands.setdefault(band, []).append(sat)
+
+    return bands
+

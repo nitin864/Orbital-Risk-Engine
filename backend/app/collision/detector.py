@@ -1,5 +1,5 @@
 from itertools import combinations
-
+from app.orbit.propagator import estimate_altitude_km, get_altitude_band
 from app.database.database import SessionLocal
 from app.database.models import CloseApproachDB
 from app.collision.distance import find_closest_approach
@@ -28,3 +28,18 @@ def scan_for_close_approaches(satellites: list, hours: int = 6, step_minutes: in
 
     db.commit()
     db.close()
+
+def group_satellites_by_band(satellites: list, band_width_km: float = 50) -> dict:
+    """
+    creted this function for grouping satellites into a dict keyed by altitude band.
+    
+    """
+    bands = {}
+
+    for sat in satellites:
+        altitude = estimate_altitude_km(sat)
+        band = get_altitude_band(altitude, band_width_km)
+
+        bands.setdefault(band, []).append(sat)
+
+    return bands
