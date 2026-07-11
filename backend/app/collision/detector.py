@@ -7,15 +7,16 @@ from skyfield.api import load
 
 
 def scan_for_close_approaches(satellites: list, hours: int = 6, step_minutes: int = 5,
-                               threshold_km: float = 100, band_width_km: float = 50):
+                               threshold_km: float = 100, altitude_band_width_km: float = 50,
+                               inclination_band_width_deg: float = 5):
     """
-    here i created this functon to check every unique pair within the same altitude band for close
+    here i created this functon to check every unique pair within the same altitude band and inclination band for close
     approaches within the next `hours`. Saves any result under
     `threshold_km` to the database.
     """
     db = SessionLocal()
-    bands = group_satellites_by_band(satellites, band_width_km)
-
+    bands = group_satellites_by_band(satellites, altitude_band_width_km, inclination_band_width_deg)
+    
     for band, sats_in_band in bands.items():
         print(f"Scanning band {band}: {len(sats_in_band)} satellites, {len(sats_in_band) * (len(sats_in_band) - 1) // 2} pairs")
         for sat1, sat2 in combinations(sats_in_band, 2):

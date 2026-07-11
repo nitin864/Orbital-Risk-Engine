@@ -147,7 +147,19 @@ structural gap right now.
 - [ ] Threshold-based close-approach flagging (e.g. < 5 km)
 - [ ] Optimization pass: KD-Tree / spatial partitioning to avoid O(n²) at
       scale (~16,000 satellites currently in the active dataset)
+### Known limitation
+Altitude + inclination banding reduces the naive O(n²) collision-check
+problem (~128M pairs) to a manageable size for the vast majority of the
+dataset. One dense cluster remains — ~973 satellites sharing near-identical
+altitude and inclination (~500-550km, ~97°), consistent with a single
+mega-constellation deployment. Narrowing inclination bin width from 5° to
+1° did not meaningfully split this cluster, confirming genuine physical
+clustering rather than a binning artifact.
 
+A production system would add a third filtering dimension (RAAN — right
+ascension of ascending node) to further separate satellites sharing both
+altitude and inclination but occupying different points around the orbital
+plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 9 — Risk Scoring

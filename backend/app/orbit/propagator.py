@@ -76,8 +76,8 @@ def get_altitude_band(altitude_km: float, band_width_km: float = 50) -> int:
     return int(altitude_km // band_width_km)
 
 
-def get_inclination_band(inclination_deg: float, band_width_deg: float = 5) -> int:
+def get_inclination_band(inclination_deg: float, band_width_deg: float = 1) -> int:
     """
-    created this function to returns which inclination band a given inclination falls into.
+    Returns which inclination band a given inclination falls into.
     """
     return int(inclination_deg // band_width_deg)
