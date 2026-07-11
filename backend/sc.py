@@ -1,9 +1,8 @@
 from app.services.satellite_query_service import get_all_satellites
-from app.collision.detector import group_satellites_by_band
+from app.collision.detector import scan_for_close_approaches
 
 satellites = get_all_satellites()
-bands = group_satellites_by_band(satellites)
+sample = satellites[:100]
 
-print("Number of bands used:", len(bands))
-for band, sats in list(bands.items())[:5]:
-    print(f"Band {band}: {len(sats)} satellites")
+scan_for_close_approaches(sample, hours=2, step_minutes=15, threshold_km=5000)
+print("Scan complete")
