@@ -1,6 +1,7 @@
 from skyfield.api import load
+
 from app.models.satellite import Satellite
-from app.orbit.propagator import get_xyz_at_time
+from app.orbit.propagator import get_xyz_and_velocity_at_time
 
 
 def calculate_distance_km(pos1: tuple, pos2: tuple) -> float:
@@ -14,11 +15,6 @@ def calculate_distance_km(pos1: tuple, pos2: tuple) -> float:
     return distance ** 0.5
 
 def find_closest_approach(sat1: Satellite, sat2: Satellite, hours: int, step_minutes: int):
-    """
-    in this function, checking the distance between two satellites at regular time steps
-    over the next hours, and returns the minimum distance found
-    and when it occurred.
-    """
     ts = load.timescale()
     t = ts.now()
     total_minutes = 60 * hours
@@ -26,18 +22,26 @@ def find_closest_approach(sat1: Satellite, sat2: Satellite, hours: int, step_min
 
     min_distance = None
     min_time = None
+    min_velocity = None
 
     for i in range(steps):
         current_time = t + (i * step_minutes / 1440)
-        pos1 = get_xyz_at_time(sat1, current_time)["position"]
-        pos2 = get_xyz_at_time(sat2, current_time)["position"]
-        distance = calculate_distance_km(pos1, pos2)
+
+        data1 = get_xyz_and_velocity_at_time(sat1, current_time)
+        data2 = get_xyz_and_velocity_at_time(sat2, current_time)
+
+        distance = calculate_distance_km(data1["position"], data2["position"])
 
         if min_distance is None or distance < min_distance:
             min_distance = distance
             min_time = current_time
+            min_velocity = calculate_relative_velocity(data1["velocity"], data2["velocity"])
 
-    return {"min_distance_km": min_distance, "time": min_time}
+    return {
+        "min_distance_km": min_distance,
+        "time": min_time,
+        "relative_velocity_km_s": min_velocity,
+    }
 
 def calculate_relative_velocity(vel1: tuple, vel2: tuple) -> float:
     """
