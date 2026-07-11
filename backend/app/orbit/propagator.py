@@ -75,18 +75,9 @@ def get_altitude_band(altitude_km: float, band_width_km: float = 50) -> int:
     """
     return int(altitude_km // band_width_km)
 
-def group_satellites_by_band(satellites: list, band_width_km: float = 50) -> dict:
+
+def get_inclination_band(inclination_deg: float, band_width_deg: float = 5) -> int:
     """
-    creted this function for grouping satellites into a dict keyed by altitude band.
-    
+    created this function to returns which inclination band a given inclination falls into.
     """
-    bands = {}
-
-    for sat in satellites:
-        altitude = estimate_altitude_km(sat)
-        band = get_altitude_band(altitude, band_width_km)
-
-        bands.setdefault(band, []).append(sat)
-
-    return bands
-
+    return int(inclination_deg // band_width_deg)
