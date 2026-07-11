@@ -81,3 +81,19 @@ def get_inclination_band(inclination_deg: float, band_width_deg: float = 1) -> i
     Returns which inclination band a given inclination falls into.
     """
     return int(inclination_deg // band_width_deg)
+
+def get_xyz_and_velocity_at_time(satellite: Satellite, time):
+    """
+    created this function to return both position (x, y, z in km) and velocity (vx, vy, vz in km/s)
+    at a specific time. Velocity is needed for relative-velocity risk scoring.
+    """
+    sky_satellite = EarthSatellite(satellite.line1, satellite.line2, satellite.name)
+    geocentric = sky_satellite.at(time)
+
+    x, y, z = geocentric.position.km
+    vx, vy, vz = geocentric.velocity.km_per_s
+
+    return {
+        "position": (float(x), float(y), float(z)),
+        "velocity": (float(vx), float(vy), float(vz)),
+    }
