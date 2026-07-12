@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from app.services.satellite_query_service import get_all_satellites, get_all_close_approaches, get_top_risks
- 
+from app.scheduler.jobs import start_scheduler
 
 
 app = FastAPI(title="OrbitShield")
-
+@app.on_event("startup")
+def on_startup():
+    start_scheduler()
 
 @app.get("/")
 def root():
