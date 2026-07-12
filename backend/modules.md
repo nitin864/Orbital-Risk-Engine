@@ -173,19 +173,19 @@ plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 10 — FastAPI (Full REST Layer)
-**Status: 🔶 Partial**
+**Status: 🔶 almost**
 
 **Done:**
 - `GET /` — health check
 - `GET /satellites` — download, parse, return preview (first 5)
 
 **Not done:**
-- [ ] `GET /satellites/{norad_id}` — single satellite detail
-- [ ] `GET /satellites/{norad_id}/position` — live position via propagator
-- [ ] `GET /conjunctions` — close approaches (depends on Module 8)
-- [ ] `GET /risks` — risk-scored list (depends on Module 9)
+- [x ] `GET /satellites/{norad_id}` — single satellite detail
+- [x ] `GET /satellites/{norad_id}/position` — live position via propagator
+- [x ] `GET /conjunctions` — close approaches (depends on Module 8)
+- [x ] `GET /risks` — risk-scored list (depends on Module 9)
 - [ ] OpenAPI documentation polish
-- [ ] Pagination on `/satellites` (currently hardcoded preview slice)
+- [x ] Pagination on `/satellites` (currently hardcoded preview slice)
 
 ---
 
