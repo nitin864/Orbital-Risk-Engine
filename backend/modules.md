@@ -165,9 +165,9 @@ plane. Not implemented here — scoped as a known future optimization.
 ## Module 9 — Risk Scoring
 **Status:Working**
 
-- [ ] Minimum separation distance
-- [ ] Relative velocity between the two objects at closest approach
-- [ ] Combine into a single risk metric
+- [x] Minimum separation distance
+- [x] Relative velocity between the two objects at closest approach
+- [x] Combine into a single risk metric
 - [ ] (Optional) object type/mass weighting if data available
 
 ---
