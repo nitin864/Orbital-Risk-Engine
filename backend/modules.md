@@ -261,3 +261,13 @@ containerization) rather than domain-specific physics.
    git add OrbitShield_Modules.md
    git commit -m "docs: update progress"
    ```
+
+
+   ### RESOLVED — propagation "bug" was actually correct behavior
+Root cause found: NORAD 25544 (ISS) and 25575 (ISS UNITY module) are
+different catalog entries for the same physical structure — same real
+orbit, hence identical propagated positions. Not a data quality bug.
+Fixed by adding a 0.5km floor in _check_and_save_pair() to exclude
+same-structure pairs from results (they're real "0km" distances, just
+not meaningful collision risks). Confirmed working: 0 entries under
+0.5km in post-fix scan, top results now show physically sane values.

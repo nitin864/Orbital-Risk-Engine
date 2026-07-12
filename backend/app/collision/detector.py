@@ -50,7 +50,7 @@ def get_neighboring_satellites(bands: dict, band_key: tuple) -> list:
 def _check_and_save_pair(db, sat1, sat2, hours, step_minutes, threshold_km):
     result = find_closest_approach(sat1, sat2, hours, step_minutes)
 
-    if result["min_distance_km"] < threshold_km:
+    if 0.5 < result["min_distance_km"] < threshold_km:
         risk_score = calculate_risk_score(result["min_distance_km"], result["relative_velocity_km_s"])
 
         approach = CloseApproachDB(
@@ -77,11 +77,11 @@ def scan_for_close_approaches(satellites: list, hours: int = 6, step_minutes: in
     for band_key, sats_in_band in bands.items():
         print(f"Band {band_key}: {len(sats_in_band)} satellites")
 
-        # Within-band pairs
+       
         for sat1, sat2 in combinations(sats_in_band, 2):
             _check_and_save_pair(db, sat1, sat2, hours, step_minutes, threshold_km)
 
-        # Cross-band pairs, only looking "forward" to avoid double-checking
+        
         alt_band, incl_band = band_key
         for alt_offset in [-2, -1, 0, 1, 2]:
             for incl_offset in [-2, -1, 0, 1, 2]:
