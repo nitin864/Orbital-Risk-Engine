@@ -209,7 +209,7 @@ plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 13 — Background Jobs / Scheduler
-**Status: ⬜ Not started**
+**Status: ✅ Done**
 
 - [ ] `apscheduler` job: refresh TLE cache automatically every N hours
       (currently only refreshes on-demand when `/satellites` is hit)
