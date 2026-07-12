@@ -24,3 +24,14 @@ def get_all_close_approaches():
     approaches = db.query(CloseApproachDB).all()
     db.close()
     return approaches
+
+def get_top_risks(limit: int = 20):
+    """
+    creating this function to return close approach, by risk score, giving
+    priority to highest first
+    """
+    db = SessionLocal()
+    result = db.query(CloseApproachDB).order_by(CloseApproachDB.risk_score.desc()).limit(limit).all()
+    
+    db.close()
+    return result
