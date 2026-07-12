@@ -139,7 +139,7 @@ structural gap right now.
 ---
 
 ## Module 8 — Collision Detection Algorithm
-**Status: WORKING**
+**Status: ✅ Done**
 
 - [ ] Distance function between two satellites at a shared timestamp (uses
       Module 6 output)
@@ -163,7 +163,7 @@ plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 9 — Risk Scoring
-**Status:Working**
+**Status:✅ Done**
 
 - [x] Minimum separation distance
 - [x] Relative velocity between the two objects at closest approach
@@ -173,7 +173,7 @@ plane. Not implemented here — scoped as a known future optimization.
 ---
 
 ## Module 10 — FastAPI (Full REST Layer)
-**Status: 🔶 almost**
+**Status: ✅ Done**
 
 **Done:**
 - `GET /` — health check

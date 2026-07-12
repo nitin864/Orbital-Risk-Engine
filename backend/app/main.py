@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from app.services.satellite_query_service import get_all_satellites, get_all_close_approaches, get_top_risks
+from app.services.satellite_query_service import get_all_satellites, get_all_close_approaches, get_top_risks,get_satellite_by_norad_id
 from app.scheduler.jobs import start_scheduler
+from app.orbit.propagator import get_current_position
 
 
 app = FastAPI(title="OrbitShield")
@@ -54,4 +55,35 @@ def get_risks(limit: int = 20):
     return {
         "count": len(result),
         "risks": result,
+    }
+    
+@app.get("/satellites/{norad_id}")
+def get_satellite(norad_id: str):
+    satellite = get_satellite_by_norad_id(norad_id)
+
+    if satellite is None:
+        raise HTTPException(status_code=404, detail=f"Satellite {norad_id} not found")
+
+    return {
+        "norad_id": satellite.norad_id,
+        "name": satellite.name,
+        "inclination": satellite.inclination,
+        "eccentricity": satellite.eccentricity,
+        "mean_motion": satellite.mean_motion,
+        "orbital_period_minutes": satellite.orbital_period_minutes,
+    }
+    
+@app.get("/satellites/{norad_id}/position")
+def get_satellite_position(norad_id: str):
+    satellite = get_satellite_by_norad_id(norad_id)
+
+    if satellite is None:
+        raise HTTPException(status_code=404, detail=f"Satellite {norad_id} not found")
+
+    position = get_current_position(satellite)
+
+    return {
+        "norad_id": satellite.norad_id,
+        "name": satellite.name,
+        "position": position,
     }

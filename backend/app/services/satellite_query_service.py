@@ -35,3 +35,12 @@ def get_top_risks(limit: int = 20):
     
     db.close()
     return result
+
+def get_satellite_by_norad_id(norad_id: str):
+    """
+    Returns a single satellite by its NORAD ID, or None if not found.
+    """
+    db = SessionLocal()
+    satellite = db.query(SatelliteDB).filter(SatelliteDB.norad_id == norad_id).first()
+    db.close()
+    return satellite
