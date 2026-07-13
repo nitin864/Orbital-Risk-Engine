@@ -14,6 +14,8 @@ API surface, and known limitations.
 ![Logs](sc/2.png)
 ![Logs](sc/3.png)
 ![Logs](sc/4.png)
+![Logs](sc/5.png)
+![Logs](sc/6.png)
  
 
 ---
