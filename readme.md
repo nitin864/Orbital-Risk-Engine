@@ -10,6 +10,12 @@ This document covers everything built so far: architecture, data flow, every
 formula used, the filtering/optimization strategy, the database schema, the
 API surface, and known limitations.
 
+![Dashboard](sc/1.png)
+![Logs](sc/2.png)
+![Logs](sc/3.png)
+![Logs](sc/4.png)
+ 
+
 ---
 
 ## 1. Tech Stack
