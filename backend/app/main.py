@@ -8,7 +8,8 @@ from app.services.satellite_query_service import (
     get_satellite_by_norad_id,
 )
 from app.scheduler.jobs import start_scheduler
-from app.orbit.propagator import get_current_position, get_position_at_time
+from app.orbit.propagator import get_current_position, get_position_at_time, get_next_pass
+from app.utils.tle import parse_international_designator, classify_orbit_shape, guess_constellation
 
 
 app = FastAPI(title="OrbitShield")
@@ -68,14 +69,17 @@ def get_all_positions(limit: int = 2000):
     of propagating on every request.
     """
     limit = max(1, min(limit, 10000))
-    satellites = get_all_satellites()[:limit]
+    try:
+        satellites = get_all_satellites()[:limit]
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Satellite catalog temporarily unavailable: {e}")
 
     positions = {}
     for sat in satellites:
         try:
             positions[sat.norad_id] = get_current_position(sat)
         except Exception:
-            # skip objects that fail to propagate (bad/missing TLE, decayed, etc.)
+            
             continue
 
     return {"count": len(positions), "positions": positions}
@@ -92,6 +96,7 @@ def get_conjunctions():
             "satellite_2": a.satellite_2_norad_id,
             "min_distance_km": a.min_distance_km,
             "closest_time_utc": a.closest_time_utc,
+            "risk_score": a.risk_score,
         })
 
     return {
@@ -132,6 +137,10 @@ def get_satellite(norad_id: str):
         "eccentricity": satellite.eccentricity,
         "mean_motion": satellite.mean_motion,
         "orbital_period_minutes": satellite.orbital_period_minutes,
+        "international_designator": parse_international_designator(satellite.line1),
+        "orbit_shape": classify_orbit_shape(satellite.eccentricity),
+        
+        "constellation_guess": guess_constellation(satellite.name),
     }
 
 
@@ -172,3 +181,31 @@ def get_orbit_path(norad_id: str, points: int = 60):
         path.append(pos)
 
     return {"norad_id": norad_id, "points": path}
+
+
+@app.get("/satellites/{norad_id}/next-pass")
+def get_next_pass_endpoint(norad_id: str, lat: float, lon: float):
+    """
+    Used by the "next pass from your location" widget (e.g. for the ISS).
+    lat/lon are the observer's location in degrees. Returns the next time
+    the satellite rises above 10° elevation from that location, within the
+    next 48 hours.
+    """
+    satellite = get_satellite_by_norad_id(norad_id)
+
+    if satellite is None:
+        raise HTTPException(status_code=404, detail=f"Satellite {norad_id} not found")
+
+    try:
+        result = get_next_pass(satellite, lat, lon)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Pass prediction failed: {e}")
+
+    if result is None:
+        raise HTTPException(status_code=404, detail="No visible pass found in the next 48 hours")
+
+    return {
+        "norad_id": satellite.norad_id,
+        "name": satellite.name,
+        **result,
+    }

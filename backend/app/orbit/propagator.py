@@ -97,3 +97,51 @@ def get_xyz_and_velocity_at_time(satellite: Satellite, time):
         "position": (float(x), float(y), float(z)),
         "velocity": (float(vx), float(vy), float(vz)),
     }
+
+
+def get_next_pass(satellite: Satellite, lat: float, lon: float, hours: int = 48, min_elevation_deg: float = 10.0):
+    """
+    Finds the next time this satellite rises above `min_elevation_deg` as
+    seen from the given lat/lon. Uses Skyfield's find_events, which does a
+    proper topocentric rise/culminate/set calculation (accounts for Earth's
+    rotation and the observer's local horizon) rather than a rough
+    subpoint-distance approximation.
+
+    Returns None if no pass starts within the search window.
+    """
+    sky_satellite = EarthSatellite(satellite.line1, satellite.line2, satellite.name)
+    observer = wgs84.latlon(lat, lon)
+
+    t0 = _ts.now()
+    t1 = _ts.tt_jd(t0.tt + hours / 24)
+
+    times, events = sky_satellite.find_events(observer, t0, t1, altitude_degrees=min_elevation_deg)
+
+    rise_time = None
+    culminate_time = None
+    set_time = None
+    for ti, event in zip(times, events):
+        if event == 0:  
+            rise_time = ti
+            culminate_time = None
+            set_time = None
+        elif event == 1:  
+            culminate_time = ti
+        elif event == 2:  # set
+            set_time = ti
+            if rise_time is not None:
+                break   
+
+    if rise_time is None:
+        return None
+
+    now_dt = t0.utc_datetime()
+    rise_dt = rise_time.utc_datetime()
+    minutes_until_rise = (rise_dt - now_dt).total_seconds() / 60
+
+    return {
+        "rise_utc": rise_dt.isoformat(),
+        "culminate_utc": culminate_time.utc_datetime().isoformat() if culminate_time is not None else None,
+        "set_utc": set_time.utc_datetime().isoformat() if set_time is not None else None,
+        "minutes_until_rise": minutes_until_rise,
+    }
