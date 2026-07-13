@@ -1,6 +1,6 @@
 # OrbitShield — Backend Technical Documentation
 
-https://github.com/nitin864/Orbital-Risk-Engine
+**Author:** [Nitin](https://github.com/nitin864)
 
 Satellite conjunction (collision) risk prediction system. Ingests live orbital
 data, propagates satellite positions using real orbital mechanics, detects
